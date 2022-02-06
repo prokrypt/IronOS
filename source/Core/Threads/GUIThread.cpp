@@ -539,15 +539,16 @@ static void gui_solderingMode(uint8_t jumpToSleep) {
       }
     }
     // else we update the screen information
-    if (OLED::getRotation()) {
-      OLED::setCursor(50, 0);
-    } else {
-      OLED::setCursor(-1, 0);
-    }
+
     OLED::clearScreen();
-    OLED::setCursor(0, 0);
+
     // Draw in the screen details
     if (getSettingValue(SettingsOptions::DetailedSoldering)) {
+      if (OLED::getRotation()) {
+        OLED::setCursor(50, 0);
+      } else {
+        OLED::setCursor(-1, 0);
+      }
       gui_drawTipTemp(true, FontStyle::LARGE);
 
 #ifndef NO_SLEEP_MODE
@@ -588,6 +589,7 @@ static void gui_solderingMode(uint8_t jumpToSleep) {
       printVoltage();
       OLED::print(SymbolVolts, FontStyle::SMALL);
     } else {
+      OLED::setCursor(0, 0);
       // We switch the layout direction depending on the orientation of the oled
       if (OLED::getRotation()) {
         // battery
@@ -731,18 +733,23 @@ void showDebugMenu(void) {
           sourceNumber = 0;
         } else {
           // We are not powered via DC, so want to display the appropriate state for PD or QC
-          bool poweredbyPD = false;
+          bool poweredbyPD        = false;
+          bool pdHasVBUSConnected = true;
 #if POW_PD
           if (USBPowerDelivery::fusbPresent()) {
             // We are PD capable
             if (USBPowerDelivery::negotiationComplete()) {
               // We are powered via PD
-              poweredbyPD = true;
+              poweredbyPD        = true;
+              pdHasVBUSConnected = USBPowerDelivery::isVBUSConnected();
             }
           }
 #endif
           if (poweredbyPD) {
             sourceNumber = 2;
+            if (!pdHasVBUSConnected) {
+              sourceNumber = 3;
+            }
           } else {
             sourceNumber = 1;
           }
