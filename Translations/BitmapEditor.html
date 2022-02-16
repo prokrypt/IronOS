@@ -198,7 +198,7 @@
         // Number of squared canvas pixels to image pixels;
         var scale = 1;
 
-        var c = document.getElementById("myCanvas");
+        var c = document.getElementById("pngCanvas");
         var context = c.getContext("2d");
         context.fillRect(0, 0, c.width, c.height);
 
@@ -215,8 +215,6 @@
         for (var e = 0; e < a.length; e++) {
           byte = parseInt(a[e], 16);
           for (var bit = 0; bit < 8; bit++) {
-            // debug.innerHTML+= e + ": " + x + "/" +  y + " " + a.length + "</br>";
-            // debug.innerHTML+= app.matrix.cols + "</br>";
             if (x > c.cols) {
               throw "write past right of canvas";
             }
@@ -243,25 +241,11 @@
             x = 0;
             y = 8 * scale;
           }
-          // debug.innerHTML+= x + " " + x/app.matrix.cols + " " + y + "</br>";
-          // debug.innerHTML+=byte + "</br>";
         }
 
         context.strokeStyle = "black";
         context.stroke();
         return c;
-      }
-
-      function makePNG() {
-        var canvas = document.getElementById("myCanvas");
-        //var context = c.getContext("2d");
-        //window.location = canvas.toDataURL("image/png");
-        ///var image = canvas.toDataURL("image/png");
-        //	document.write('<img src="'+image+'"/>');
-        var image = canvas
-          .toDataURL("image/png")
-          .replace("image/png", "image/octet-stream");
-        window.location.href = image;
       }
 
       function stringFromMatrix(skipEncodedData, skipEncodedEscapeSequence) {
@@ -322,6 +306,7 @@
               } else if (app.type == "small") {
                 app.matrix.cols = 6;
                 app.matrix.rows = 8;
+                canvasObj.width = 20;
               } else if (app.type == "icon") {
                 app.matrix.cols = 16;
                 app.matrix.rows = 16;
@@ -351,10 +336,6 @@
         var mg;
         if (x < 6) mg = 0;
         else mg = 1;
-        //		var elements = document.getElementsByClassName('c');
-        //		for (var i=0; i<elements.length;i++){
-        //			elements.item(i).style="height: "+x+"px; width: "+x+"px;"+mg;
-        //		}
         styles.sheet.rules[3].style.height = x + "px";
         styles.sheet.rules[3].style.width = x + "px";
         styles.sheet.rules[3].style.marginRight = mg + "px";
@@ -375,7 +356,6 @@
         function processData() {
           var pushy, data, aB, bS;
           pushy = [];
-          //			bodyAppend("p","processing data");
           data = fr.result;
           for (i = 297; i < 297 + 192; i += 2) {
             aB = data.charCodeAt(i + 1);
@@ -466,24 +446,21 @@
         <input
           type="button"
           id="btnLoad"
-          value="Import"
+          value="Import dfu file"
           onclick="importFile();"
         />
         (Remember to set correct canvas size before importing)
       </form>
       <br />
-
+      <h3>PNG render for export</h3>
+      <p>Right click to save locally</p>
       <canvas
-        id="myCanvas"
+        id="pngCanvas"
         width="96"
         height="16"
         style="border: 1px dotted #000000; padding: 10px"
       >
       </canvas>
-
-      <form>
-        <input type="button" value="Make PNG" onclick="makePNG();" />
-      </form>
 
       <div id="debug"></div>
     </div>
