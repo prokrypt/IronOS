@@ -2,7 +2,8 @@
 	"languageCode": "VI",
 	"languageLocalName": "Tiếng Việt",
 	"fonts": [
-		"ascii_basic"
+		"ascii_basic",
+		"latin_extended"
 	],
 	"tempUnitFahrenheit": true,
 	"messages": {
