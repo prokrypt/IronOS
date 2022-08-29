@@ -3,6 +3,7 @@
 	"languageLocalName": "English",
 	"fonts": [
 		"ascii_basic",
+		"latin_extended"
 	],
 	"tempUnitFahrenheit": true,
 	"messages": {
