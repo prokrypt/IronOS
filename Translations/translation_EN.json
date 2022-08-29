@@ -179,7 +179,7 @@
 				"Calibrate",
 				"temperature"
 			],
-			"desc": "Tip Cold Junction Compensation--not needed if temp is +/- 5 C"
+			"desc": "Tip Cold Junction Compensation--not needed if temp is +|- 5 C"
 		},
 		"SettingsReset": {
 			"text2": [
